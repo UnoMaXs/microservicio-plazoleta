@@ -9,6 +9,8 @@ public class Plato {
     private String urlPlato;
     private String categoriaPlato;
 
+    public Plato() {
+    }
     public Plato(Long idPlato, String nombrePlato, String descripcionPlato, Long precioPlato, String urlPlato, String categoriaPlato) {
         this.idPlato = idPlato;
         this.nombrePlato = nombrePlato;
