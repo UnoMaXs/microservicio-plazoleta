@@ -7,6 +7,8 @@ import com.plazoleta.domain.model.Restaurante;
 import com.plazoleta.domain.spi.IRestaurantePersistencePort;
 import com.plazoleta.infrastructure.exception.BusinessException;
 
+import java.util.Optional;
+
 public class RestauranteUseCase implements IRestauranteServicePort {
 
     private final IRestaurantePersistencePort restaurantePersistencePort;
@@ -36,6 +38,11 @@ public class RestauranteUseCase implements IRestauranteServicePort {
             throw new BusinessException("El nombre de el restaurante no puede ser solo numeros. Ejemplo:'Mi Restaurante 21'");
         }
         restaurantePersistencePort.saveRestaurante(restaurante);
+    }
+
+    @Override
+    public Optional<Restaurante> findRestauranteById(Long id) {
+        return Optional.empty();
     }
 
 

@@ -9,4 +9,6 @@ public interface UsuarioFeignClient {
 
     @GetMapping("/{id}/rol")
     String obtenerRol(@PathVariable("id") Long id);
+
+
 }

@@ -23,6 +23,9 @@ public class PlatoAppHandler implements IPlatoAppHandler {
         plato.setPrecioPlato(platoAppRequestDto.getPrecioPlato());
         plato.setUrlPlato(platoAppRequestDto.getUrlPlato());
         plato.setCategoriaPlato(platoAppRequestDto.getCategoriaPlato());
+        plato.setActivoPlato(true);
+        plato.setIdRestaurante(platoAppRequestDto.getIdRestaurante());
+        plato.setIdUsuario(platoAppRequestDto.getIdUsuario());
 
         platoServicePort.savePlato(plato);
     }
