@@ -12,4 +12,6 @@ public class PlatoAppRequestDto {
     private Long precioPlato;
     private String urlPlato;
     private String categoriaPlato;
+    private Long idRestaurante;
+    private Long idUsuario; 
 }
