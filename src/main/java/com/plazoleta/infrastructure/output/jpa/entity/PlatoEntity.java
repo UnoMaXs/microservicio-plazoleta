@@ -24,5 +24,7 @@ public class PlatoEntity {
     private String urlPlato;
     private String categoriaPlato;
     private Boolean activoPlato;
+    private Long idUsuario;
+    private Long idRestaurante;
 
 }

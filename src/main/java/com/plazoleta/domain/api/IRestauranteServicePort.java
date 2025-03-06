@@ -9,5 +9,5 @@ public interface IRestauranteServicePort {
 
     void saveRestaurante(Restaurante restaurante);
 
-    Optional<Restaurante> findRestauranteById(Long id);
+
 }

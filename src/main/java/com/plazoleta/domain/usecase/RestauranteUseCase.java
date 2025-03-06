@@ -40,10 +40,6 @@ public class RestauranteUseCase implements IRestauranteServicePort {
         restaurantePersistencePort.saveRestaurante(restaurante);
     }
 
-    @Override
-    public Optional<Restaurante> findRestauranteById(Long id) {
-        return Optional.empty();
-    }
 
 
     private boolean esTelefonoRestauranteValido(String telefonoRestaurante) {
