@@ -2,6 +2,7 @@ package com.plazoleta.infrastructure.output.jpa.adapter;
 
 import com.plazoleta.domain.model.Plato;
 import com.plazoleta.domain.spi.IPlatoPersistencePort;
+import com.plazoleta.infrastructure.exception.BusinessException;
 import com.plazoleta.infrastructure.output.jpa.mapper.IPlatoEntityMapper;
 import com.plazoleta.infrastructure.output.jpa.repository.IPlatoRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,5 +15,12 @@ public class PlatoJpaAdapter implements IPlatoPersistencePort {
     @Override
     public void savePlato(Plato plato) {
         platoRepository.save(platoEntityMapper.toPlatoEntity(plato));
+    }
+
+    @Override
+    public Plato findPlatoById(Long idPlato) {
+        return platoRepository.findById(idPlato)
+                .map(platoEntityMapper::toPlato)
+                .orElseThrow(() -> new BusinessException("El plato no existe"));
     }
 }
