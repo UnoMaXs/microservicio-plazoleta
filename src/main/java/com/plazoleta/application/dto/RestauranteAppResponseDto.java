@@ -8,4 +8,6 @@ public class RestauranteAppResponseDto {
     private String telefonoRestaurante;
     private String urlLogo;
     private Long idUsuario;
+    private Long idRolPropietario;
+
 }

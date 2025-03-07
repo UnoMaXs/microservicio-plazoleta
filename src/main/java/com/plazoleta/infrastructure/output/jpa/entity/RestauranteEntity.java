@@ -24,5 +24,7 @@ public class RestauranteEntity {
     private Long telefonoRestaurante;
     private String urlLogo;
     private Long idUsuario;
+    private Long idRolPropietario;
+
 
 }

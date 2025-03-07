@@ -13,4 +13,6 @@ public class RestauranteAppRequestDto {
     private String telefonoRestaurante;
     private String urlLogo;
     private Long idUsuario;
+    private Long idRolPropietario;
+
 }

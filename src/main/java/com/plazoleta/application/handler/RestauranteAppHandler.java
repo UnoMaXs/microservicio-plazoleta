@@ -25,6 +25,7 @@ public class RestauranteAppHandler implements IRestauranteAppHandler {
         restaurante.setTelefonoRestaurante(restauranteAppRequestDto.getTelefonoRestaurante());
         restaurante.setUrlLogo(restauranteAppRequestDto.getUrlLogo());
         restaurante.setIdUsuario(restauranteAppRequestDto.getIdUsuario());
+        restaurante.setIdRolPropietario(restauranteAppRequestDto.getIdRolPropietario());
 
         restauranteServicePort.saveRestaurante(restaurante);
     }

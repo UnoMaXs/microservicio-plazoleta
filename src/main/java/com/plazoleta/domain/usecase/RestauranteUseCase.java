@@ -22,10 +22,15 @@ public class RestauranteUseCase implements IRestauranteServicePort {
     @Override
     public void saveRestaurante(Restaurante restaurante) {
 
-        String rol = usuarioServicePort.obtenerRolUsuario(restaurante.getIdUsuario());
-        if (!"PROPIETARIO".equalsIgnoreCase(rol)) {
-            throw new RuntimeException("El usuario no tiene rol de propietario.");
+        String rolAdmin = usuarioServicePort.obtenerRolUsuario(restaurante.getIdUsuario());
+        if (!"ADMINISTRADOR".equalsIgnoreCase(rolAdmin)) {
+            throw new BusinessException("El usuario no tiene rol de administrador.");
         }
+        String rolPropietario = usuarioServicePort.obtenerRolUsuario(restaurante.getIdRolPropietario());
+        if (!"PROPIETARIO".equalsIgnoreCase(rolPropietario)) {
+            throw new BusinessException("Usuario propietario no tiene rol PROPIETARIO");
+        }
+        restaurante.setIdUsuario(restaurante.getIdRolPropietario());
 
         if (restaurante.getNit() == null || restaurante.getNit() <= 0) {
             throw new BusinessException("Documento de identidad debe ser un número positivo.");
@@ -37,6 +42,9 @@ public class RestauranteUseCase implements IRestauranteServicePort {
         if (!esNombreRestauranteValido(restaurante.getNombreRestaurante())) {
             throw new BusinessException("El nombre de el restaurante no puede ser solo numeros. Ejemplo:'Mi Restaurante 21'");
         }
+
+
+
         restaurantePersistencePort.saveRestaurante(restaurante);
     }
 

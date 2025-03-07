@@ -10,12 +10,13 @@ public class Restaurante {
     private String telefonoRestaurante;
     private String urlLogo;
     private Long idUsuario;
+    private Long idRolPropietario;
 
 
     public Restaurante() {
     }
 
-    public Restaurante(Long idRestaurante, String nombreRestaurante, Long nit, String direccion, String telefonoRestaurante, String urlLogo, Long idUsuario) {
+    public Restaurante(Long idRestaurante, String nombreRestaurante, Long nit, String direccion, String telefonoRestaurante, String urlLogo, Long idUsuario, Long idRolPropietario) {
         this.idRestaurante = idRestaurante;
         this.nombreRestaurante = nombreRestaurante;
         this.nit = nit;
@@ -23,6 +24,7 @@ public class Restaurante {
         this.telefonoRestaurante = telefonoRestaurante;
         this.urlLogo = urlLogo;
         this.idUsuario = idUsuario;
+        this.idRolPropietario = idRolPropietario;
     }
 
     public Long getIdRestaurante() {
@@ -79,5 +81,13 @@ public class Restaurante {
 
     public void setIdUsuario(Long idUsuario) {
         this.idUsuario = idUsuario;
+    }
+
+    public Long getIdRolPropietario() {
+        return idRolPropietario;
+    }
+
+    public void setIdRolPropietario(Long idRolPropietario) {
+        this.idRolPropietario = idRolPropietario;
     }
 }

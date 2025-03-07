@@ -17,7 +17,7 @@ public class PlatoAppRestController {
 private final IPlatoAppHandler platoAppHandler;
 
     @PostMapping("/save")
-    public ResponseEntity<Void> savePlatoInPlatoApp(PlatoAppRequestDto platoAppRequestDto){
+    public ResponseEntity<Void> savePlatoInPlatoApp(@RequestBody PlatoAppRequestDto platoAppRequestDto){
     platoAppHandler.savePlatoInPlatoApp(platoAppRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
 
