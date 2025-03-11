@@ -8,11 +8,13 @@ import com.plazoleta.domain.spi.IPlatoPersistencePort;
 import com.plazoleta.domain.spi.IRestaurantePersistencePort;
 import com.plazoleta.infrastructure.exception.BusinessException;
 
+
 public class PlatoUseCase implements IPlatoServicePort {
 
     private final IPlatoPersistencePort platoPersistencePort;
     private final IRestaurantePersistencePort restaurantePersistencePort;
     private final IUsuarioServicePort usuarioServicePort;
+
 
     public PlatoUseCase(IPlatoPersistencePort platoPersistencePort, IRestaurantePersistencePort restaurantePersistencePort, IUsuarioServicePort usuarioServicePort) {
         this.platoPersistencePort = platoPersistencePort;
@@ -38,13 +40,13 @@ public class PlatoUseCase implements IPlatoServicePort {
             throw new BusinessException("No eres propietario de este restaurante, no puedes crear platos aquí.");
         }
 
-        plato.setActivoPlato(true);
+        plato.setEstado(true);
 
         platoPersistencePort.savePlato(plato);
     }
 
     @Override
-    public Plato updatePlato(Long idPlato, Plato platoModificado, Long idUsuario) {
+    public Plato   updatePlato(Long idPlato, Plato platoModificado, Long idUsuario) {
 
         String rol = usuarioServicePort.obtenerRolUsuario(idUsuario);
         if (!"PROPIETARIO".equalsIgnoreCase(rol)) {
@@ -72,6 +74,37 @@ public class PlatoUseCase implements IPlatoServicePort {
         return platoUpdate;
     }
 
+    @Override
+    public Plato updateEstadoPlato(Long idPlato, boolean nuevoEstado, Long idUsuario) {
+
+        String rol = usuarioServicePort.obtenerRolUsuario(idUsuario);
+        if (!"PROPIETARIO".equalsIgnoreCase(rol)) {
+            throw new BusinessException("El usuario no tiene permisos para habilitar o deshabilitar platos.");
+        }
+
+
+        Plato plato = platoPersistencePort.findPlatoById(idPlato);
+        if (plato == null) {
+            throw new BusinessException("El plato que intentas actualizar no existe.");
+        }
+
+
+        Restaurante restaurante = restaurantePersistencePort.findRestauranteById(plato.getIdRestaurante());
+        if (restaurante == null) {
+            throw new BusinessException("El restaurante asociado al plato no existe.");
+        }
+
+
+        if (!restaurante.getIdUsuario().equals(idUsuario)) {
+            throw new BusinessException("No eres propietario de este restaurante, no puedes cambiar el estado del plato.");
+        }
+
+
+        plato.setEstado(nuevoEstado);
+        platoPersistencePort.savePlato(plato);
+
+        return plato;
+    }
 
 
 }

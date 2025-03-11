@@ -1,8 +1,6 @@
 package com.plazoleta.infrastructure.input.rest;
 
-import com.plazoleta.application.dto.PlatoAppRequestDto;
-import com.plazoleta.application.dto.PlatoUpdateRequestDto;
-import com.plazoleta.application.dto.PlatoUpdateResponseDto;
+import com.plazoleta.application.dto.*;
 import com.plazoleta.application.handler.IPlatoAppHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,6 +27,18 @@ private final IPlatoAppHandler platoAppHandler;
             @PathVariable("idUsuario") Long idUsuario,
             @RequestBody PlatoUpdateRequestDto platoUpdateRequestDto) {
         PlatoUpdateResponseDto updatedPlato = platoAppHandler.updatePlatoInPlatoApp(idPlato, platoUpdateRequestDto, idUsuario);
+        return ResponseEntity.ok(updatedPlato);
+    }
+
+    @PatchMapping("/{idPlato}/estado/{idUsuario}")
+    public ResponseEntity<PlatoUpdateEstadoResponseDto> actualizarEstadoPlato(
+            @PathVariable Long idPlato,
+            @PathVariable Long idUsuario,
+            @RequestBody PlatoUpdateEstadoRequestDto requestDto) {
+
+
+        PlatoUpdateEstadoResponseDto updatedPlato =
+                platoAppHandler.updateEstadoPlatoInPlatoApp(idPlato, requestDto.isEstado(), idUsuario);
         return ResponseEntity.ok(updatedPlato);
     }
 

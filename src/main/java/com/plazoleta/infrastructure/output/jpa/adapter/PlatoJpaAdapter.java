@@ -23,4 +23,19 @@ public class PlatoJpaAdapter implements IPlatoPersistencePort {
                 .map(platoEntityMapper::toPlato)
                 .orElseThrow(() -> new BusinessException("El plato no existe"));
     }
+
+    @Override
+    public Plato updateEstadoPlato(Long idPlato, boolean nuevoEstado, Long idUsuario) {
+        var platoEntity = platoRepository.findById(idPlato)
+                .orElseThrow(() -> new BusinessException("El plato no existe"));
+
+
+        platoEntity.setEstado(nuevoEstado);
+
+
+        platoRepository.save(platoEntity);
+
+
+        return platoEntityMapper.toPlato(platoEntity);
+    }
 }

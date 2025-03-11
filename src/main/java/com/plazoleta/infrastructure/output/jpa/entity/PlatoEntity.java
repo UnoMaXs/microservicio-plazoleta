@@ -23,7 +23,7 @@ public class PlatoEntity {
     private Long precioPlato;
     private String urlPlato;
     private String categoriaPlato;
-    private Boolean activoPlato;
+    private Boolean estado;
     private Long idUsuario;
     private Long idRestaurante;
 
