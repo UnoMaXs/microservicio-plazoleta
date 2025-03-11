@@ -1,6 +1,7 @@
 package com.plazoleta.application.mapper;
 
 import com.plazoleta.application.dto.PlatoAppRequestDto;
+import com.plazoleta.application.dto.PlatoUpdateEstadoRequestDto;
 import com.plazoleta.application.dto.PlatoUpdateResponseDto;
 import com.plazoleta.domain.model.Plato;
 import org.mapstruct.Mapper;
@@ -13,4 +14,6 @@ public interface IPlatoAppResponseMapper {
 
     PlatoAppRequestDto toPlatoAppRequestDto(Plato plato);
     PlatoUpdateResponseDto toPlatoUpdateResponseDto(Plato plato);
+    PlatoUpdateEstadoRequestDto toPlatoUpdateEstadoRequestDto(Plato plato);
+
 }

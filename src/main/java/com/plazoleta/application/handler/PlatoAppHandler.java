@@ -1,8 +1,6 @@
 package com.plazoleta.application.handler;
 
-import com.plazoleta.application.dto.PlatoAppRequestDto;
-import com.plazoleta.application.dto.PlatoUpdateRequestDto;
-import com.plazoleta.application.dto.PlatoUpdateResponseDto;
+import com.plazoleta.application.dto.*;
 import com.plazoleta.application.mapper.IPlatoAppRequestMapper;
 import com.plazoleta.application.mapper.IPlatoAppResponseMapper;
 import com.plazoleta.domain.api.IPlatoServicePort;
@@ -29,7 +27,7 @@ public class PlatoAppHandler implements IPlatoAppHandler {
         plato.setPrecioPlato(platoAppRequestDto.getPrecioPlato());
         plato.setUrlPlato(platoAppRequestDto.getUrlPlato());
         plato.setCategoriaPlato(platoAppRequestDto.getCategoriaPlato());
-        plato.setActivoPlato(true);
+        plato.setEstado(true);
         plato.setIdRestaurante(platoAppRequestDto.getIdRestaurante());
         plato.setIdUsuario(platoAppRequestDto.getIdUsuario());
 
@@ -42,6 +40,15 @@ public class PlatoAppHandler implements IPlatoAppHandler {
         Plato platoActualizado = platoServicePort.updatePlato(platoId, platoModificado, usuarioId);
 
         return iPlatoAppResponseMapper.toPlatoUpdateResponseDto(platoActualizado);
+    }
+
+    @Override
+    public PlatoUpdateEstadoResponseDto updateEstadoPlatoInPlatoApp(Long platoId, Boolean nuevoEstado, Long usuarioId) {
+        Plato platoActualizado = platoServicePort.updateEstadoPlato(platoId, nuevoEstado, usuarioId);
+
+
+        return new PlatoUpdateEstadoResponseDto(
+                platoActualizado.getEstado());
     }
 
 }

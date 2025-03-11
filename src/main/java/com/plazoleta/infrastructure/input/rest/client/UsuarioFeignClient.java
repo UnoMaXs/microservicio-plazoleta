@@ -11,5 +11,7 @@ public interface UsuarioFeignClient {
     @GetMapping("/{id}/rol")
     String obtenerRol(@PathVariable("id") Long id);
 
-
+    @GetMapping("/propietario/{idRestaurante}")
+    Long obtenerIdPropietarioPorRestaurante(@PathVariable("idRestaurante") Long idRestaurante);
 }
+
