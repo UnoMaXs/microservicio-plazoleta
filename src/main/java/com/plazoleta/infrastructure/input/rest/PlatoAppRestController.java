@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/platoApp")
 @RequiredArgsConstructor
@@ -42,5 +44,16 @@ private final IPlatoAppHandler platoAppHandler;
         return ResponseEntity.ok(updatedPlato);
     }
 
+    @GetMapping("/restaurantes/{idRestaurante}/menu")
+    public ResponseEntity<List<PlatoAppResponseDto>> getMenuRestaurante(
+            @PathVariable Long idRestaurante,
+            @RequestParam(required = false) String categoria,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        List<PlatoAppResponseDto> response =
+                platoAppHandler.listPlatosMenu(idRestaurante, categoria, page, size);
+        return ResponseEntity.ok(response);
+    }
 
 }

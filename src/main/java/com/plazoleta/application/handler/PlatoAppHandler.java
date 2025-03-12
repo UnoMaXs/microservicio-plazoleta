@@ -9,6 +9,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -49,6 +52,14 @@ public class PlatoAppHandler implements IPlatoAppHandler {
 
         return new PlatoUpdateEstadoResponseDto(
                 platoActualizado.getEstado());
+    }
+
+    @Override
+    public List<PlatoAppResponseDto> listPlatosMenu(Long idRestaurante, String categoria, int page, int size) {
+        List<Plato> platos = platoServicePort.getPlatosByRestaurante(idRestaurante, categoria, page, size);
+        return platos.stream()
+                .map(iPlatoAppResponseMapper::toPlatoAppResponseDto)
+                .collect(Collectors.toList());
     }
 
 }
