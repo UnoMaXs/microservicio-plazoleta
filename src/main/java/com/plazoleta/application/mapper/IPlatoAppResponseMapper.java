@@ -1,6 +1,7 @@
 package com.plazoleta.application.mapper;
 
 import com.plazoleta.application.dto.PlatoAppRequestDto;
+import com.plazoleta.application.dto.PlatoAppResponseDto;
 import com.plazoleta.application.dto.PlatoUpdateEstadoRequestDto;
 import com.plazoleta.application.dto.PlatoUpdateResponseDto;
 import com.plazoleta.domain.model.Plato;
@@ -12,7 +13,7 @@ import org.mapstruct.ReportingPolicy;
         unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface IPlatoAppResponseMapper {
 
-    PlatoAppRequestDto toPlatoAppRequestDto(Plato plato);
+    PlatoAppResponseDto toPlatoAppResponseDto(Plato plato);
     PlatoUpdateResponseDto toPlatoUpdateResponseDto(Plato plato);
     PlatoUpdateEstadoRequestDto toPlatoUpdateEstadoRequestDto(Plato plato);
 

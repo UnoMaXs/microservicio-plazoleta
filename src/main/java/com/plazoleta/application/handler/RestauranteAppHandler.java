@@ -1,11 +1,16 @@
 package com.plazoleta.application.handler;
 
 import com.plazoleta.application.dto.RestauranteAppRequestDto;
+import com.plazoleta.application.dto.RestauranteAppResponseDto;
+import com.plazoleta.application.mapper.IRestauranteAppResponseMapper;
 import com.plazoleta.domain.api.IRestauranteServicePort;
 import com.plazoleta.domain.model.Restaurante;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -14,7 +19,7 @@ import org.springframework.stereotype.Service;
 public class RestauranteAppHandler implements IRestauranteAppHandler {
 
     private final IRestauranteServicePort restauranteServicePort;
-
+private final IRestauranteAppResponseMapper restauranteAppResponseMapper;
 
     @Override
     public void saveRestauranteInRestauranteApp(RestauranteAppRequestDto restauranteAppRequestDto) {
@@ -29,4 +34,14 @@ public class RestauranteAppHandler implements IRestauranteAppHandler {
 
         restauranteServicePort.saveRestaurante(restaurante);
     }
+
+    @Override
+    public List<RestauranteAppResponseDto> listRestaurantes(int page, int size) {
+        List<Restaurante> restaurantes = restauranteServicePort.getAllRestaurantes(page, size);
+
+        return restaurantes.stream()
+                .map(restauranteAppResponseMapper::toRestauranteAppResponseDto)
+                .collect(Collectors.toList());
+    }
+
 }

@@ -8,6 +8,8 @@ import com.plazoleta.domain.spi.IPlatoPersistencePort;
 import com.plazoleta.domain.spi.IRestaurantePersistencePort;
 import com.plazoleta.infrastructure.exception.BusinessException;
 
+import java.util.List;
+
 
 public class PlatoUseCase implements IPlatoServicePort {
 
@@ -105,6 +107,16 @@ public class PlatoUseCase implements IPlatoServicePort {
 
         return plato;
     }
+
+    @Override
+    public List<Plato> getPlatosByRestaurante(Long idRestaurante, String categoria, int page, int size) {
+        if (categoria != null && !categoria.trim().isEmpty()) {
+            return platoPersistencePort.findByRestauranteAndCategoria(idRestaurante, categoria, page, size);
+        } else {
+            return platoPersistencePort.findByRestaurante(idRestaurante, page, size);
+        }
+    }
+
 
 
 }

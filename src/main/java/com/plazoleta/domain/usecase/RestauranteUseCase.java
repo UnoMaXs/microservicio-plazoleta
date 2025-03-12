@@ -7,6 +7,7 @@ import com.plazoleta.domain.model.Restaurante;
 import com.plazoleta.domain.spi.IRestaurantePersistencePort;
 import com.plazoleta.infrastructure.exception.BusinessException;
 
+import java.util.List;
 import java.util.Optional;
 
 public class RestauranteUseCase implements IRestauranteServicePort {
@@ -48,6 +49,10 @@ public class RestauranteUseCase implements IRestauranteServicePort {
         restaurantePersistencePort.saveRestaurante(restaurante);
     }
 
+    @Override
+    public List<Restaurante> getAllRestaurantes(int page, int size) {
+        return restaurantePersistencePort.findAllRestaurantsOrderedByName(page, size);
+    }
 
 
     private boolean esTelefonoRestauranteValido(String telefonoRestaurante) {

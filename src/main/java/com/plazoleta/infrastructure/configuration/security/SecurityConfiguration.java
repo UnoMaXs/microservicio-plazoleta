@@ -24,7 +24,7 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
 
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**","/restauranteApp/all","/platoApp/restaurantes/{idRestaurante}/menu").permitAll()
 
                         .anyRequest().authenticated()
                 )
