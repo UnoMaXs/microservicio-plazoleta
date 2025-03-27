@@ -23,20 +23,22 @@ public class PedidoUseCase implements IPedidoServicePort {
 
     @Override
     public Pedido savePedido(Pedido pedido) {
-        if (pedidoPersistencePort.usuarioTienePedidoActivo(
-                pedido.getIdCliente())) {
+        validarPedido(pedido);
+
+        if (pedidoPersistencePort.usuarioTienePedidoActivo(pedido.getIdCliente())) {
             throw new BusinessException("El usuario ya tiene un pedido en proceso.");
         }
 
         pedido.setEstado(EstadoPedido.PENDIENTE);
 
-
-        Pedido pedidoCreado = pedidoPersistencePort.savePedido(pedido);
-
-        return pedidoCreado;
+        return pedidoPersistencePort.savePedido(pedido);
     }
 
     private void validarPedido(Pedido pedido) {
+        if (pedido.getIdRestaurante() == null) {
+            throw new BusinessException("El pedido debe especificar un restaurante.");
+        }
+
         if (pedido.getItems() == null || pedido.getItems().isEmpty()) {
             throw new BusinessException("El pedido no tiene platos.");
         }

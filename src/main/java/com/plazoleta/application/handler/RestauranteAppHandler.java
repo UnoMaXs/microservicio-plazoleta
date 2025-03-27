@@ -2,6 +2,7 @@ package com.plazoleta.application.handler;
 
 import com.plazoleta.application.dto.RestauranteAppRequestDto;
 import com.plazoleta.application.dto.RestauranteAppResponseDto;
+import com.plazoleta.application.mapper.IRestauranteAppRequestMapper;
 import com.plazoleta.application.mapper.IRestauranteAppResponseMapper;
 import com.plazoleta.domain.api.IRestauranteServicePort;
 import com.plazoleta.domain.model.Restaurante;
@@ -19,20 +20,12 @@ import java.util.stream.Collectors;
 public class RestauranteAppHandler implements IRestauranteAppHandler {
 
     private final IRestauranteServicePort restauranteServicePort;
-private final IRestauranteAppResponseMapper restauranteAppResponseMapper;
+    private final IRestauranteAppResponseMapper restauranteAppResponseMapper;
+    private final IRestauranteAppRequestMapper restauranteAppRequestMapper;
 
     @Override
     public void saveRestauranteInRestauranteApp(RestauranteAppRequestDto restauranteAppRequestDto) {
-        Restaurante restaurante = new Restaurante();
-        restaurante.setNombreRestaurante(restauranteAppRequestDto.getNombreRestaurante());
-        restaurante.setNit(restauranteAppRequestDto.getNit());
-        restaurante.setDireccion(restauranteAppRequestDto.getDireccion());
-        restaurante.setTelefonoRestaurante(restauranteAppRequestDto.getTelefonoRestaurante());
-        restaurante.setUrlLogo(restauranteAppRequestDto.getUrlLogo());
-        restaurante.setIdUsuario(restauranteAppRequestDto.getIdUsuario());
-        restaurante.setIdRolPropietario(restauranteAppRequestDto.getIdRolPropietario());
-
-        restauranteServicePort.saveRestaurante(restaurante);
+        restauranteServicePort.saveRestaurante(restauranteAppRequestMapper.toRestaurante(restauranteAppRequestDto));
     }
 
     @Override
@@ -42,6 +35,11 @@ private final IRestauranteAppResponseMapper restauranteAppResponseMapper;
         return restaurantes.stream()
                 .map(restauranteAppResponseMapper::toRestauranteAppResponseDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Long getRestauranteById(Long id) {
+        return restauranteServicePort.getRestauranteById(id);
     }
 
 }

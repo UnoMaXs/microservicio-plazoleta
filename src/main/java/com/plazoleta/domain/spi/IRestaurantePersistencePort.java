@@ -10,5 +10,6 @@ public interface IRestaurantePersistencePort {
      void saveRestaurante(Restaurante restaurante);
      Restaurante findRestauranteById(Long id);
      List<Restaurante> findAllRestaurantsOrderedByName(int page, int size);
+     Long getRestauranteById(Long id);
 
 }

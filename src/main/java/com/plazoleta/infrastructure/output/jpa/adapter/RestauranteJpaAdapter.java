@@ -44,6 +44,10 @@ public class RestauranteJpaAdapter implements IRestaurantePersistencePort {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public Long getRestauranteById(Long id) {
+        return restauranteRepository.findById(id).get().getIdRestaurante();
+    }
 
 
 }
