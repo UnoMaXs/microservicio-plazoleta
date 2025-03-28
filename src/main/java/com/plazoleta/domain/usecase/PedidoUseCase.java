@@ -8,6 +8,8 @@ import com.plazoleta.domain.model.PedidoItem;
 import com.plazoleta.domain.spi.IPedidoPersistencePort;
 import com.plazoleta.domain.spi.IRestaurantePersistencePort;
 import com.plazoleta.infrastructure.exception.BusinessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 public class PedidoUseCase implements IPedidoServicePort {
 
@@ -34,6 +36,17 @@ public class PedidoUseCase implements IPedidoServicePort {
         return pedidoPersistencePort.savePedido(pedido);
     }
 
+    @Override
+    public Page<Pedido> getPedidosPorEstados(Long restauranteId, EstadoPedido estado, int page, int size) {
+        if (!restaurantePersistencePort.elEmpleadoPerteneceAlRestaurante(restauranteId)) {
+            throw new BusinessException("El empleado no pertenece a este restaurante.");
+        }
+
+
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return pedidoPersistencePort.findPedidosPorEstadoYRestaurante(estado, restauranteId, pageRequest);
+    }
+
     private void validarPedido(Pedido pedido) {
         if (pedido.getIdRestaurante() == null) {
             throw new BusinessException("El pedido debe especificar un restaurante.");
@@ -45,7 +58,7 @@ public class PedidoUseCase implements IPedidoServicePort {
 
         Long restauranteId = pedido.getIdRestaurante();
         for (PedidoItem item : pedido.getItems()) {
-            if (!item.getIdRestaurante().equals(restauranteId)) {
+            if (item.getIdRestaurante() == null || !item.getIdRestaurante().equals(restauranteId)) {
                 throw new BusinessException("Todos los platos deben ser del mismo restaurante.");
             }
             if (item.getCantidad() <= 0) {
