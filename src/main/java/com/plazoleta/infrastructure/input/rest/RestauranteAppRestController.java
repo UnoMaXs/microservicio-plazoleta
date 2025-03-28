@@ -32,4 +32,11 @@ public class RestauranteAppRestController {
         List<RestauranteAppResponseDto> response = restauranteAppHandler.listRestaurantes(page, size);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/{id}/restaurante")
+    public ResponseEntity<Long> getRestauranteById(@PathVariable Long id
+    ) {
+        Long response = restauranteAppHandler.getRestauranteById(id);
+        return ResponseEntity.ok(response);
+    }
 }

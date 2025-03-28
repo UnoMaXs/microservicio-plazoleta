@@ -3,13 +3,14 @@ package com.plazoleta.infrastructure.input.rest;
 import com.plazoleta.application.dto.PedidoRequestDto;
 import com.plazoleta.application.dto.PedidoResponseDto;
 import com.plazoleta.application.handler.IPedidoAppHandler;
+import com.plazoleta.domain.model.EstadoPedido;
+import com.plazoleta.domain.model.Pedido;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/pedidoApp")
@@ -23,4 +24,18 @@ public class PedidoAppRestController {
         PedidoResponseDto pedidoResponseDto = pedidoAppHandler.savePedido(pedidoRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(pedidoResponseDto);
     }
+
+    @GetMapping("/estado")
+    @PreAuthorize("hasRole('ROLE_EMPLEADO')")
+    public ResponseEntity<Page<Pedido>> getPedidosPorEstado(
+            @RequestParam Long restauranteId,
+            @RequestParam EstadoPedido estado,
+            @RequestParam int page,
+            @RequestParam int size) {
+
+        Page<Pedido> pedidos = pedidoAppHandler.getPedidosPorEstado(restauranteId, estado, page, size);
+
+        return ResponseEntity.ok(pedidos);
+    }
+
 }

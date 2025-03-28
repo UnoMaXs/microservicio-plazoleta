@@ -9,4 +9,5 @@ public interface IRestauranteAppHandler {
 
     void saveRestauranteInRestauranteApp(RestauranteAppRequestDto restauranteAppRequestDto);
     List<RestauranteAppResponseDto> listRestaurantes(int page, int size);
+    Long getRestauranteById(Long id);
 }

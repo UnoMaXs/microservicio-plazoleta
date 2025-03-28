@@ -1,6 +1,5 @@
 package com.plazoleta.domain.usecase;
 
-
 import com.plazoleta.domain.api.IRestauranteServicePort;
 import com.plazoleta.domain.api.IUsuarioServicePort;
 import com.plazoleta.domain.model.Restaurante;
@@ -8,7 +7,6 @@ import com.plazoleta.domain.spi.IRestaurantePersistencePort;
 import com.plazoleta.infrastructure.exception.BusinessException;
 
 import java.util.List;
-import java.util.Optional;
 
 public class RestauranteUseCase implements IRestauranteServicePort {
 
@@ -22,29 +20,14 @@ public class RestauranteUseCase implements IRestauranteServicePort {
 
     @Override
     public void saveRestaurante(Restaurante restaurante) {
+        validarRolUsuario(restaurante.getIdUsuario(), "ADMINISTRADOR");
+        validarRolUsuario(restaurante.getIdRolPropietario(), "PROPIETARIO");
 
-        String rolAdmin = usuarioServicePort.obtenerRolUsuario(restaurante.getIdUsuario());
-        if (!"ADMINISTRADOR".equalsIgnoreCase(rolAdmin)) {
-            throw new BusinessException("El usuario no tiene rol de administrador.");
-        }
-        String rolPropietario = usuarioServicePort.obtenerRolUsuario(restaurante.getIdRolPropietario());
-        if (!"PROPIETARIO".equalsIgnoreCase(rolPropietario)) {
-            throw new BusinessException("Usuario propietario no tiene rol PROPIETARIO");
-        }
         restaurante.setIdUsuario(restaurante.getIdRolPropietario());
 
-        if (restaurante.getNit() == null || restaurante.getNit() <= 0) {
-            throw new BusinessException("Documento de identidad debe ser un número positivo.");
-        }
-        if (!esTelefonoRestauranteValido(restaurante.getTelefonoRestaurante())) {
-            throw new BusinessException("Teléfono inválido; máximo 13 dígitos y debe iniciar con '+57'.");
-        }
-
-        if (!esNombreRestauranteValido(restaurante.getNombreRestaurante())) {
-            throw new BusinessException("El nombre de el restaurante no puede ser solo numeros. Ejemplo:'Mi Restaurante 21'");
-        }
-
-
+        validarNit(restaurante.getNit());
+        validarTelefono(restaurante.getTelefonoRestaurante());
+        validarNombreRestaurante(restaurante.getNombreRestaurante());
 
         restaurantePersistencePort.saveRestaurante(restaurante);
     }
@@ -54,22 +37,36 @@ public class RestauranteUseCase implements IRestauranteServicePort {
         return restaurantePersistencePort.findAllRestaurantsOrderedByName(page, size);
     }
 
-
-    private boolean esTelefonoRestauranteValido(String telefonoRestaurante) {
-        if (telefonoRestaurante == null) return false;
-
-        return telefonoRestaurante.matches("\\+?\\d{1,13}");
+    @Override
+    public Long getRestauranteById(Long id) {
+        return restaurantePersistencePort.getRestauranteById(id);
     }
 
-    private boolean esNombreRestauranteValido(String nombre) {
+    private void validarRolUsuario(Long idUsuario, String rolEsperado) {
+        String rolUsuario = usuarioServicePort.obtenerRolUsuario(idUsuario);
+        if (!rolEsperado.equalsIgnoreCase(rolUsuario)) {
+            throw new BusinessException("El usuario no tiene rol de " + rolEsperado + ".");
+        }
+    }
+
+    private void validarNit(Long nit) {
+        if (nit == null || nit <= 0) {
+            throw new BusinessException("Documento de identidad debe ser un número positivo.");
+        }
+    }
+
+    private void validarTelefono(String telefono) {
+        if (telefono == null || !telefono.matches("\\+57\\d{8,13}")) {
+            throw new BusinessException("Teléfono inválido; máximo 13 dígitos y debe iniciar con '+57'.");
+        }
+    }
+
+    private void validarNombreRestaurante(String nombre) {
         if (nombre == null || nombre.trim().isEmpty()) {
-            return false;
+            throw new BusinessException("El nombre del restaurante no puede estar vacío.");
         }
-
         if (nombre.matches("\\d+")) {
-            return false;
+            throw new BusinessException("El nombre del restaurante no puede ser solo números.");
         }
-        return true;
     }
-
 }
