@@ -8,16 +8,21 @@ public class Pedido {
     private Long idRestaurante;
     private EstadoPedido estado;
     private List<PedidoItem> items;
+    private Long empleadoAsignado;
+    private String pin;
+
 
     public Pedido() {
     }
 
-    public Pedido(Long idPedido, Long idCliente, Long idRestaurante, EstadoPedido estado, List<PedidoItem> items) {
+    public Pedido(Long idPedido, Long idCliente, Long idRestaurante, EstadoPedido estado, List<PedidoItem> items, Long empleadoAsignado, String pin) {
         this.idPedido = idPedido;
         this.idCliente = idCliente;
         this.idRestaurante = idRestaurante;
         this.estado = estado;
         this.items = items;
+        this.empleadoAsignado = empleadoAsignado;
+        this.pin = pin;
     }
 
     public Long getIdPedido() {
@@ -58,5 +63,21 @@ public class Pedido {
 
     public void setItems(List<PedidoItem> items) {
         this.items = items;
+    }
+
+    public Long getEmpleadoAsignado() {
+        return empleadoAsignado;
+    }
+
+    public void setEmpleadoAsignado(Long empleadoAsignado) {
+        this.empleadoAsignado = empleadoAsignado;
+    }
+
+    public String getPin() {
+        return pin;
+    }
+
+    public void setPin(String pin) {
+        this.pin = pin;
     }
 }

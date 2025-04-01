@@ -34,4 +34,17 @@ public class PedidoHandler implements IPedidoAppHandler{
     public Page<Pedido> getPedidosPorEstado(Long restauranteId, EstadoPedido estado, int page, int size) {
         return pedidoServicePort.getPedidosPorEstados(restauranteId, estado, page, size);
     }
+
+    @Override
+    public PedidoResponseDto asignarEmpleadoYPonerEnPreparacion(Long idPedido, Long idEmpleado) {
+        Pedido pedido = pedidoServicePort.asignarEmpleadoYPonerEnPreparacion(idPedido, idEmpleado);
+        return pedidoResponseMapper.toPedidoResponseDto(pedido);
+    }
+
+    @Override
+    public PedidoResponseDto marcarPedidoComoListo(Long idPedido) {
+        Pedido pedido = pedidoServicePort.marcarPedidoComoListo(idPedido);
+        return pedidoResponseMapper.toPedidoResponseDto(pedido);
+    }
+
 }

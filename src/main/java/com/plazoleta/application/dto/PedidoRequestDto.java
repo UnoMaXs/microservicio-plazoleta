@@ -11,4 +11,5 @@ public class PedidoRequestDto {
     private Long idCliente;
     private Long idRestaurante;
     private List<PedidoItemRequestDto> items;
+    private Long empleadoAsignado;
 }
