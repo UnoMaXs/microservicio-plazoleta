@@ -38,4 +38,19 @@ public class PedidoAppRestController {
         return ResponseEntity.ok(pedidos);
     }
 
+    @PutMapping("/asignarEmpleado/{idPedido}")
+    @PreAuthorize("hasRole('ROLE_EMPLEADO')")
+    public ResponseEntity<PedidoResponseDto> asignarEmpleado(@PathVariable Long idPedido, @RequestParam Long idEmpleado) {
+        PedidoResponseDto pedidoResponseDto = pedidoAppHandler.asignarEmpleadoYPonerEnPreparacion(idPedido, idEmpleado);
+        return ResponseEntity.ok(pedidoResponseDto);
+    }
+
+    @PutMapping("/marcarPedidoListo/{idPedido}")
+    @PreAuthorize("hasRole('ROLE_EMPLEADO')")
+    public ResponseEntity<PedidoResponseDto> marcarPedidoComoListo(@PathVariable Long idPedido) {
+        PedidoResponseDto pedidoResponseDto = pedidoAppHandler.marcarPedidoComoListo(idPedido);
+        return ResponseEntity.ok(pedidoResponseDto);
+    }
+
+
 }

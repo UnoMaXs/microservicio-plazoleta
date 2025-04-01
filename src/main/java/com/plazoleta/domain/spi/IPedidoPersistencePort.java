@@ -10,5 +10,7 @@ public interface IPedidoPersistencePort {
     Pedido savePedido(Pedido pedido);
     boolean usuarioTienePedidoActivo(Long idUsuario);
     Page<Pedido> findPedidosPorEstadoYRestaurante(EstadoPedido estado, Long restauranteId, PageRequest pageRequest);
+    Pedido findById(Long idPedido);
+
 
 }

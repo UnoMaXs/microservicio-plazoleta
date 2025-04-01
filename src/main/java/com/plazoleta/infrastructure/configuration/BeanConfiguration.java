@@ -1,10 +1,7 @@
 package com.plazoleta.infrastructure.configuration;
 
 
-import com.plazoleta.domain.api.IPedidoServicePort;
-import com.plazoleta.domain.api.IPlatoServicePort;
-import com.plazoleta.domain.api.IRestauranteServicePort;
-import com.plazoleta.domain.api.IUsuarioServicePort;
+import com.plazoleta.domain.api.*;
 import com.plazoleta.domain.spi.IPedidoPersistencePort;
 import com.plazoleta.domain.spi.IPlatoPersistencePort;
 import com.plazoleta.domain.spi.IRestaurantePersistencePort;
@@ -35,6 +32,7 @@ public class BeanConfiguration {
     private final IUsuarioServicePort usuarioServicePort;
     private final IPedidoRepository pedidoRepository;
     private final IPedidoEntityMapper pedidoEntityMapper;
+    private final IMensajeriaServicePort mensajeriaService;
 
     @Bean
     public IPlatoPersistencePort platoPersistencePort(){
@@ -63,7 +61,7 @@ public class BeanConfiguration {
 
     @Bean
     public IPedidoServicePort pedidoServicePort(){
-        return new PedidoUseCase(pedidoPersistencePort(), usuarioServicePort, restaurantePersistencePort());
+        return new PedidoUseCase(pedidoPersistencePort(), usuarioServicePort, restaurantePersistencePort(), mensajeriaService);
     }
 
 }

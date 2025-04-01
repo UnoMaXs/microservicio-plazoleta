@@ -23,6 +23,7 @@ public class PedidoEntity {
 
     private Long idCliente;
     private Long idRestaurante;
+    private Long empleadoAsignado;
 
     @Enumerated(EnumType.STRING)
     private EstadoPedido estado;

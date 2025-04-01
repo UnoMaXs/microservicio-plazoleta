@@ -13,5 +13,8 @@ public interface UsuarioFeignClient {
 
     @GetMapping("/propietario/{idRestaurante}")
     Long obtenerIdPropietarioPorRestaurante(@PathVariable("idRestaurante") Long idRestaurante);
+
+    @GetMapping("/usuarios/{id}/celular")
+    String obtenerCelular(@PathVariable("id") Long id);
 }
 

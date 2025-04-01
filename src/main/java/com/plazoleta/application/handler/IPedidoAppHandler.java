@@ -10,6 +10,8 @@ public interface IPedidoAppHandler {
 
     PedidoResponseDto savePedido(PedidoRequestDto requestDto);
     Page<Pedido> getPedidosPorEstado(Long restauranteId, EstadoPedido estado, int page, int size);
+    PedidoResponseDto asignarEmpleadoYPonerEnPreparacion(Long idPedido, Long idEmpleado);
+    PedidoResponseDto marcarPedidoComoListo(Long idPedido);
 
 
 }
