@@ -9,9 +9,13 @@ import com.plazoleta.domain.model.PedidoItem;
 import com.plazoleta.domain.spi.IPedidoPersistencePort;
 import com.plazoleta.domain.spi.IRestaurantePersistencePort;
 import com.plazoleta.infrastructure.exception.BusinessException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.Random;
+
+@Slf4j
 public class PedidoUseCase implements IPedidoServicePort {
 
     private final IPedidoPersistencePort pedidoPersistencePort;
@@ -73,11 +77,14 @@ public class PedidoUseCase implements IPedidoServicePort {
             throw new BusinessException("Solo los pedidos en preparación pueden ser marcados como listos.");
         }
 
+        String pin = String.format("%06d", new Random().nextInt(999999));
+        log.info("El PIN generado es: {}", pin);
+        pedido.setPin(pin);
         pedido.setEstado(EstadoPedido.LISTO);
         pedidoPersistencePort.savePedido(pedido);
 
         String celular = usuarioServicePort.obtenerTelefonoCliente(pedido.getIdCliente());
-        String mensaje = "Tu pedido está listo. Tu pin de recogida es: " + pedido.getPin();
+        String mensaje = "Tu pedido está listo. Tu pin de recogida es: " + pin;
 
 
         mensajeriaService.enviarNotificacion(celular, mensaje);
@@ -85,6 +92,47 @@ public class PedidoUseCase implements IPedidoServicePort {
         return pedido;
     }
 
+    @Override
+    public Pedido entregarPedido(Long idPedido, String pinIngresado) {
+        Pedido pedido = pedidoPersistencePort.findById(idPedido);
+        if (pedido == null) {
+            throw new BusinessException("Pedido no encontrado.");
+        }
+
+        if (!EstadoPedido.LISTO.equals(pedido.getEstado())) {
+            throw new BusinessException("Solo los pedidos en estado 'Listo' pueden pasar a 'Entregado'.");
+        }
+
+        if (!pinIngresado.equals(pedido.getPin())) {
+            throw new BusinessException("El PIN ingresado es incorrecto.");
+        }
+
+        pedido.setEstado(EstadoPedido.ENTREGADO);
+        pedidoPersistencePort.savePedido(pedido);
+
+        return pedido;
+    }
+
+    @Override
+    public Pedido cambiarEstadoPedido(Long idPedido, EstadoPedido nuevoEstado) {
+        Pedido pedido = pedidoPersistencePort.findById(idPedido);
+        if (pedido == null) {
+            throw new BusinessException("Pedido no encontrado.");
+        }
+
+        if (EstadoPedido.CANCELADO.equals(nuevoEstado) && !EstadoPedido.PENDIENTE.equals(pedido.getEstado())) {
+            throw new BusinessException("Lo sentimos, tu pedido ya está en preparación y no puede cancelarse.");
+        }
+
+        if (EstadoPedido.ENTREGADO.equals(pedido.getEstado()) && !EstadoPedido.LISTO.equals(nuevoEstado)) {
+            throw new BusinessException("No se puede cambiar un pedido 'Entregado' a otro estado que no sea 'Listo'.");
+        }
+
+        pedido.setEstado(nuevoEstado);
+        pedidoPersistencePort.savePedido(pedido);
+
+        return pedido;
+    }
 
 
     private void validarPedido(Pedido pedido) {
