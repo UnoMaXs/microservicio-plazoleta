@@ -10,4 +10,6 @@ public interface IPedidoServicePort {
     Page<Pedido> getPedidosPorEstados(Long restauranteId, EstadoPedido estado, int page, int size);
     Pedido asignarEmpleadoYPonerEnPreparacion(Long idPedido, Long idEmpleado);
     Pedido marcarPedidoComoListo(Long idPedido);
+    Pedido entregarPedido(Long idPedido, String pinIngresado);
+    Pedido cambiarEstadoPedido(Long idPedido, EstadoPedido nuevoEstado);
 }

@@ -47,4 +47,19 @@ public class PedidoHandler implements IPedidoAppHandler{
         return pedidoResponseMapper.toPedidoResponseDto(pedido);
     }
 
+    @Override
+    public PedidoResponseDto entregarPedido(Long idPedido, String pinIngresado) {
+        Pedido pedidoEntregado = pedidoServicePort.entregarPedido(idPedido, pinIngresado);
+
+        return pedidoResponseMapper.toPedidoResponseDto(pedidoEntregado);
+    }
+
+
+    @Override
+    public PedidoResponseDto cambiarEstadoPedido(Long idPedido, EstadoPedido nuevoEstado) {
+        Pedido pedido = pedidoServicePort.cambiarEstadoPedido(idPedido, nuevoEstado);
+        return pedidoResponseMapper.toPedidoResponseDto(pedido);
+
+    }
+
 }

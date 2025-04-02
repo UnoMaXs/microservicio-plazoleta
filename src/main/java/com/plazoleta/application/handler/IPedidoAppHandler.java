@@ -12,6 +12,9 @@ public interface IPedidoAppHandler {
     Page<Pedido> getPedidosPorEstado(Long restauranteId, EstadoPedido estado, int page, int size);
     PedidoResponseDto asignarEmpleadoYPonerEnPreparacion(Long idPedido, Long idEmpleado);
     PedidoResponseDto marcarPedidoComoListo(Long idPedido);
+    PedidoResponseDto entregarPedido(Long idPedido, String pinIngresado);
+    PedidoResponseDto cambiarEstadoPedido(Long idPedido, EstadoPedido nuevoEstado);
+
 
 
 }

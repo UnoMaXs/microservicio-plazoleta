@@ -52,5 +52,25 @@ public class PedidoAppRestController {
         return ResponseEntity.ok(pedidoResponseDto);
     }
 
+    @PutMapping("/entregarPedido/{idPedido}")
+    @PreAuthorize("hasRole('ROLE_EMPLEADO')")
+    public ResponseEntity<PedidoResponseDto> entregarPedido(
+            @PathVariable Long idPedido,
+            @RequestParam String pin) {
+
+        PedidoResponseDto pedidoResponseDto = pedidoAppHandler.entregarPedido(idPedido, pin);
+        return ResponseEntity.ok(pedidoResponseDto);
+    }
+
+    @PutMapping("/cambiarEstado/{idPedido}")
+    @PreAuthorize("hasRole('ROLE_EMPLEADO')")
+    public ResponseEntity<PedidoResponseDto> cambiarEstadoDelPedido(
+            @PathVariable Long idPedido,
+            @RequestParam EstadoPedido nuevoEstado) {
+
+        PedidoResponseDto pedidoResponseDto = pedidoAppHandler.cambiarEstadoPedido(idPedido, nuevoEstado);
+        return ResponseEntity.ok(pedidoResponseDto);
+    }
+
 
 }
